@@ -18,7 +18,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.orange[700],
-        title: const Text('Notifications'),
+        title: const Text('Notifications',style: TextStyle(color: Colors.white),),
       ),
       body: Obx(() {
         if (notiController.isLoading.value) {

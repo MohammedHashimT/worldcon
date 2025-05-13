@@ -15,6 +15,7 @@ class Kerala extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.orange[700],
         title: Text('About Kerala', style: TextStyle(color: Colors.white)),
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: Obx(() {
         if (infoController.isLoading.value) {

@@ -33,20 +33,19 @@ class _HomeScreenState extends State<HomeScreen> {
     MenuItem(
       title: "Today's Program",
       icon: FontAwesomeIcons.calendarDay,
-      onTap: (){},
+      onTap: () {},
     ),
     MenuItem(
       title: "Our Speakers",
       icon: FontAwesomeIcons.microphoneLines,
       onTap: () {
-        Get.to(()=> Speakers());
+        Get.to(() => Speakers());
       },
     ),
     MenuItem(
       title: "Scientific Program",
       icon: FontAwesomeIcons.flaskVial,
-      onTap: () {
-      },
+      onTap: () {},
     ),
   ];
 
@@ -60,31 +59,15 @@ class _HomeScreenState extends State<HomeScreen> {
     ),
     MenuItem(
       title: "My Registration",
-      icon: FontAwesomeIcons.users,
-      onTap: () {
-        Get.to(() => Attendees());
-      },
+      icon: FontAwesomeIcons.solidRegistered,
+      onTap: () {},
     ),
-    MenuItem(
-      title: "Quiz",
-      icon: FontAwesomeIcons.users,
-      onTap: () {
-        Get.to(() => Attendees());
-      },
-    ),
-    MenuItem(
-      title: "Gallery",
-      icon: FontAwesomeIcons.users,
-      onTap: () {
-        Get.to(() => Attendees());
-      },
-    ),
+    MenuItem(title: "Quiz", icon: FontAwesomeIcons.linesLeaning, onTap: () {}),
+    MenuItem(title: "Gallery", icon: FontAwesomeIcons.images, onTap: () {}),
     MenuItem(
       title: "Download Certificate",
       icon: FontAwesomeIcons.fileArrowDown,
-      onTap: () {
-        Get.to(() => Attendees());
-      },
+      onTap: () {},
     ),
     MenuItem(
       title: "Root map to Venue",
@@ -93,20 +76,14 @@ class _HomeScreenState extends State<HomeScreen> {
         Get.to(() => RouteMap());
       },
     ),
+
     MenuItem(
       title: "Parking Instructions",
-      icon: FontAwesomeIcons.map,
-      onTap: () {
-        Get.to(() => RouteMap());
-      },
+      icon: FontAwesomeIcons.squareVirus,
+      onTap: () {},
     ),
-    MenuItem(
-      title: "Note",
-      icon: FontAwesomeIcons.map,
-      onTap: () {
-        Get.to(() => RouteMap());
-      },
-    ),
+
+    MenuItem(title: "Note", icon: FontAwesomeIcons.noteSticky, onTap: () {}),
     MenuItem(
       title: "Downloads",
       icon: FontAwesomeIcons.download,
@@ -114,13 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
         Get.to(() => DownloadScreen());
       },
     ),
-    MenuItem(
-      title: "Attractions",
-      icon: FontAwesomeIcons.map,
-      onTap: () {
-        Get.to(() => RouteMap());
-      },
-    ),
+    MenuItem(title: "Attractions", icon: FontAwesomeIcons.magnet, onTap: () {}),
     MenuItem(
       title: "Venue Layout",
       icon: FontAwesomeIcons.building,
@@ -130,29 +101,19 @@ class _HomeScreenState extends State<HomeScreen> {
     ),
     MenuItem(
       title: "Exhibitors",
-      icon: FontAwesomeIcons.map,
-      onTap: () {
-        Get.to(() => RouteMap());
-      },
+      icon: FontAwesomeIcons.layerGroup,
+      onTap: () {},
     ),
     MenuItem(
       title: "Lost & Found",
-      icon: FontAwesomeIcons.map,
-      onTap: () {
-        Get.to(() => RouteMap());
-      },
+      icon: FontAwesomeIcons.question,
+      onTap: () {},
     ),
-    MenuItem(
-      title: "Feedback",
-      icon: FontAwesomeIcons.map,
-      onTap: () {
-        Get.to(() => RouteMap());
-      },
-    ),
+    MenuItem(title: "Feedback", icon: FontAwesomeIcons.comment, onTap: () {}),
 
     MenuItem(
       title: "Refer Friend",
-      icon: FontAwesomeIcons.fileArrowDown,
+      icon: FontAwesomeIcons.userGroup,
       onTap: () {},
     ),
   ];
@@ -264,10 +225,7 @@ class _HomeScreenState extends State<HomeScreen> {
         //automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
 
-        title: Image.asset(
-          'Assets/img/logo.jpg',
-
-        ),
+        title: Image.asset('Assets/img/logo.jpg'),
         actions: [
           _buildAppBarAction(FontAwesomeIcons.qrcode, () {}),
           _buildAppBarAction(FontAwesomeIcons.mapMarkerAlt, () {}),

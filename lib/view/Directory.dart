@@ -15,7 +15,7 @@ class DirectoryScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.orange[700],
-        title: const Text('Directory'),
+        title: const Text('Directory',style: TextStyle(color: Colors.white),),
       ),
       body: SingleChildScrollView(
         child: Obx(() {
@@ -35,7 +35,7 @@ class DirectoryScreen extends StatelessWidget {
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.red,
-                    fontSize: 20,
+                    fontSize: 16,
                   ),
                 ),
                 ListView.builder(
@@ -107,7 +107,7 @@ class DirectoryScreen extends StatelessWidget {
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.red,
-                    fontSize: 20,
+                    fontSize: 16,
                   ),
                 ),
                 ListView.builder(

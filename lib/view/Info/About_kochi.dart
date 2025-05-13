@@ -15,6 +15,7 @@ class Kochi extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.orange[700],
         title: Text('About Kochi', style: TextStyle(color: Colors.white)),
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: Obx(() {
         if (infoController.isLoading.value) {

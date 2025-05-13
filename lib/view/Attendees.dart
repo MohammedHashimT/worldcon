@@ -16,12 +16,7 @@ class Attendees extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.orange[700],
         title: const Text('Attendees', style: TextStyle(color: Colors.white)),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.search, color: Colors.white),
-          ),
-        ],
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: Obx(() {
         if (controller.isLoading.value) {
@@ -63,9 +58,16 @@ class Attendees extends StatelessWidget {
                           width: 60,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            image: DecorationImage(
-                              image: AssetImage('Assets/img/sample.jpg'),
-                              fit: BoxFit.cover,
+                            color: Colors.grey, // Background color
+                          ),
+                          alignment: Alignment.center,
+                          child: Text(
+                            (attendee.name.isNotEmpty)
+                                ? attendee.name[0].toUpperCase()
+                                : '',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 24,
                             ),
                           ),
                         ),

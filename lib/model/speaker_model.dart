@@ -1,7 +1,7 @@
 class speakerModel {
-  final String? name; // Allow null
-  final String? designation; // Allow null
-  final String? image; // Allow null
+  final String? name;
+  final String? designation;
+  final String? image;
 
   speakerModel({
     this.name,
@@ -11,9 +11,9 @@ class speakerModel {
 
   factory speakerModel.fromJson(Map<String, dynamic> json) {
     return speakerModel(
-      name: json['name'] as String?, // Cast to String?
-      designation: json['designation'] as String?, // Cast to String?
-      image: json['image'] as String?, // Cast to String?
+      name: json['name'] as String?,
+      designation: json['designation'] as String?,
+      image: json['image'] as String?,
     );
   }
 
