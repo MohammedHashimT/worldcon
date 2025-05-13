@@ -6,6 +6,7 @@ import 'package:worldcon/view/Downloads/Downloads.dart';
 import 'package:worldcon/view/Routemap_venue_layout.dart';
 import 'package:worldcon/view/Venue%20Layout/VENUE.dart';
 import 'package:worldcon/view/Venue%20Layout/Venue_layout.dart';
+import 'package:worldcon/view/speakers.dart';
 import '../controller/Banner_control.dart';
 
 class MenuItem {
@@ -32,17 +33,20 @@ class _HomeScreenState extends State<HomeScreen> {
     MenuItem(
       title: "Today's Program",
       icon: FontAwesomeIcons.calendarDay,
-      onTap: () => print("Today's Program tapped"),
+      onTap: (){},
     ),
     MenuItem(
       title: "Our Speakers",
       icon: FontAwesomeIcons.microphoneLines,
-      onTap: () => print("Our Speakers tapped"),
+      onTap: () {
+        Get.to(()=> Speakers());
+      },
     ),
     MenuItem(
       title: "Scientific Program",
       icon: FontAwesomeIcons.flaskVial,
-      onTap: () => print("Scientific Program tapped"),
+      onTap: () {
+      },
     ),
   ];
 
@@ -55,17 +59,31 @@ class _HomeScreenState extends State<HomeScreen> {
       },
     ),
     MenuItem(
-      title: "Downloads",
-      icon: FontAwesomeIcons.download,
+      title: "My Registration",
+      icon: FontAwesomeIcons.users,
       onTap: () {
-        Get.to(() => DownloadScreen());
+        Get.to(() => Attendees());
       },
     ),
     MenuItem(
-      title: "Venue Layout",
-      icon: FontAwesomeIcons.building,
+      title: "Quiz",
+      icon: FontAwesomeIcons.users,
       onTap: () {
-        Get.to(() => VenueLayoutScreen());
+        Get.to(() => Attendees());
+      },
+    ),
+    MenuItem(
+      title: "Gallery",
+      icon: FontAwesomeIcons.users,
+      onTap: () {
+        Get.to(() => Attendees());
+      },
+    ),
+    MenuItem(
+      title: "Download Certificate",
+      icon: FontAwesomeIcons.fileArrowDown,
+      onTap: () {
+        Get.to(() => Attendees());
       },
     ),
     MenuItem(
@@ -76,7 +94,64 @@ class _HomeScreenState extends State<HomeScreen> {
       },
     ),
     MenuItem(
-      title: "Download certificate",
+      title: "Parking Instructions",
+      icon: FontAwesomeIcons.map,
+      onTap: () {
+        Get.to(() => RouteMap());
+      },
+    ),
+    MenuItem(
+      title: "Note",
+      icon: FontAwesomeIcons.map,
+      onTap: () {
+        Get.to(() => RouteMap());
+      },
+    ),
+    MenuItem(
+      title: "Downloads",
+      icon: FontAwesomeIcons.download,
+      onTap: () {
+        Get.to(() => DownloadScreen());
+      },
+    ),
+    MenuItem(
+      title: "Attractions",
+      icon: FontAwesomeIcons.map,
+      onTap: () {
+        Get.to(() => RouteMap());
+      },
+    ),
+    MenuItem(
+      title: "Venue Layout",
+      icon: FontAwesomeIcons.building,
+      onTap: () {
+        Get.to(() => VenueLayoutScreen());
+      },
+    ),
+    MenuItem(
+      title: "Exhibitors",
+      icon: FontAwesomeIcons.map,
+      onTap: () {
+        Get.to(() => RouteMap());
+      },
+    ),
+    MenuItem(
+      title: "Lost & Found",
+      icon: FontAwesomeIcons.map,
+      onTap: () {
+        Get.to(() => RouteMap());
+      },
+    ),
+    MenuItem(
+      title: "Feedback",
+      icon: FontAwesomeIcons.map,
+      onTap: () {
+        Get.to(() => RouteMap());
+      },
+    ),
+
+    MenuItem(
+      title: "Refer Friend",
       icon: FontAwesomeIcons.fileArrowDown,
       onTap: () {},
     ),
@@ -186,21 +261,12 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        automaticallyImplyLeading: false,
+        //automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
-        elevation: 0.5,
+
         title: Image.asset(
           'Assets/img/logo.jpg',
-          errorBuilder: (context, error, stackTrace) {
-            return Text(
-              'WORLDCON',
-              style: TextStyle(
-                color: primaryColor,
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-              ),
-            );
-          },
+
         ),
         actions: [
           _buildAppBarAction(FontAwesomeIcons.qrcode, () {}),

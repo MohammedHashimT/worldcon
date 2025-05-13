@@ -11,7 +11,6 @@ class NotiController extends GetxController {
     super.onInit();
     fetchNotification();
   }
-
   Future<void> fetchNotification() async {
     try {
       isLoading.value = true;

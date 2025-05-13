@@ -34,7 +34,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 leading: Icon(Icons.notifications, color: Colors.orange[700]),
                 title: Text(notification.title),
                 subtitle: Text(notification.message),
-
                 onTap: () {},
               );
             },
