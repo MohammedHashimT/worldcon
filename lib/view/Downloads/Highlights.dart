@@ -11,6 +11,7 @@ class Highlights extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.orange[700],
         title: Text('Highlights', style: TextStyle(color: Colors.white)),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: SfPdfViewer.network(
         "http://app.worldcon2025kochi.com/storage/_1738904794.pdf",

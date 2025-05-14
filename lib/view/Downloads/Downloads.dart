@@ -100,6 +100,8 @@ class _DownloadScreenState extends State<DownloadScreen> {
             },
           ),
         ],
+        iconTheme: const IconThemeData(color: Colors.white),
+
       ),
       body: Obx(() {
         if (_downloadController.isLoading.value) {

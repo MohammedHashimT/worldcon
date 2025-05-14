@@ -11,6 +11,7 @@ class Proctocure extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.orange[700],
         title: Text('Proctocure 2024', style: TextStyle(color: Colors.white)),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: SfPdfViewer.network(
         "http://app.worldcon2025kochi.com/storage/_1738905136.pdf",

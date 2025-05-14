@@ -14,6 +14,8 @@ class ConvocationCeremony extends StatelessWidget {
           'Convocation Ceremony of WORLDCON',
           style: TextStyle(color: Colors.white),
         ),
+        iconTheme: const IconThemeData(color: Colors.white),
+
       ),
       body: SfPdfViewer.network(
         "http://app.worldcon2025kochi.com/storage/_1738904720.pdf",

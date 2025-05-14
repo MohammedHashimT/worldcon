@@ -12,6 +12,7 @@ class VenueLayoutScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.orange[700],
         title: const Text('Venue Layout'),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
 
       body: ListView.builder(

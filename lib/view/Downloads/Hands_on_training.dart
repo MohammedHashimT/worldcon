@@ -14,6 +14,7 @@ class HandsOnTraining extends StatelessWidget {
           'Hands - on - Training Sessions',
           style: TextStyle(color: Colors.white),
         ),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: SfPdfViewer.network(
         "http://app.worldcon2025kochi.com/storage/_1738903991.pdf",

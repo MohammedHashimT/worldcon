@@ -16,6 +16,7 @@ class GynaecologyHighlight extends StatelessWidget {
           'Gynaecology - Highlight',
           style: TextStyle(color: Colors.white),
         ),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Container(
         color: Colors.grey,

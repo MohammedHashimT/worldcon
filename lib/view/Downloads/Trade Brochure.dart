@@ -11,6 +11,7 @@ class TradeBrochure extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.orange[700],
         title: Text('Trade Brochure', style: TextStyle(color: Colors.white)),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: SfPdfViewer.network(
         "http://app.worldcon2025kochi.com/storage/_1738905023.pdf",

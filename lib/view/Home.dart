@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:worldcon/view/Attendees.dart';
+import 'package:worldcon/view/Attractions/Attractions.dart';
 import 'package:worldcon/view/Downloads/Downloads.dart';
+import 'package:worldcon/view/Downloads/Parking_ins.dart';
+import 'package:worldcon/view/Exhibitors.dart';
 import 'package:worldcon/view/Routemap_venue_layout.dart';
 import 'package:worldcon/view/Venue%20Layout/VENUE.dart';
 import 'package:worldcon/view/Venue%20Layout/Venue_layout.dart';
@@ -80,7 +83,9 @@ class _HomeScreenState extends State<HomeScreen> {
     MenuItem(
       title: "Parking Instructions",
       icon: FontAwesomeIcons.squareVirus,
-      onTap: () {},
+      onTap: () {
+        Get.to(() => ParkingIns());
+      },
     ),
 
     MenuItem(title: "Note", icon: FontAwesomeIcons.noteSticky, onTap: () {}),
@@ -91,7 +96,13 @@ class _HomeScreenState extends State<HomeScreen> {
         Get.to(() => DownloadScreen());
       },
     ),
-    MenuItem(title: "Attractions", icon: FontAwesomeIcons.magnet, onTap: () {}),
+    MenuItem(
+      title: "Attractions",
+      icon: FontAwesomeIcons.magnet,
+      onTap: () {
+        Get.to(AttractionScreen());
+      },
+    ),
     MenuItem(
       title: "Venue Layout",
       icon: FontAwesomeIcons.building,
@@ -102,7 +113,9 @@ class _HomeScreenState extends State<HomeScreen> {
     MenuItem(
       title: "Exhibitors",
       icon: FontAwesomeIcons.layerGroup,
-      onTap: () {},
+      onTap: () {
+        Get.to(() => ExhibitorScreen());
+      },
     ),
     MenuItem(
       title: "Lost & Found",
@@ -163,7 +176,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       child: ListTile(
-        leading: FaIcon(item.icon, color: Colors.orange[700], size: 22),
+        leading: FaIcon(item.icon, color: Colors.red, size: 22),
         title: Text(
           item.title,
           style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
@@ -191,10 +204,10 @@ class _HomeScreenState extends State<HomeScreen> {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Colors.orange[50],
+                  color: Colors.grey[50],
                   shape: BoxShape.circle,
                 ),
-                child: FaIcon(item.icon, color: Colors.orange[700], size: 24),
+                child: FaIcon(item.icon, color: Colors.red, size: 30),
               ),
               const SizedBox(height: 8),
               Text(

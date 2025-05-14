@@ -14,6 +14,7 @@ class ParkingIns extends StatelessWidget {
           'Parking Instructions',
           style: TextStyle(color: Colors.white),
         ),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: SfPdfViewer.network(
         "http://app.worldcon2025kochi.com/storage/_1739006226.pdf",

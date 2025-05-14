@@ -10,6 +10,7 @@ class VenueScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.orange[700],
         title: const Text('VENUE LAYOUT'),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Center(
         child: Container(
