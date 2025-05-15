@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:worldcon/view/Attractions/Attractions.dart';
-import 'package:worldcon/view/Attractions/Cherai_beach.dart';
-import 'package:worldcon/view/Attractions/Fort_kochi.dart';
-import 'package:worldcon/view/Attractions/Hill_palace_Museum.dart';
-import 'package:worldcon/view/Attractions/MarineDrive.dart';
-import 'package:worldcon/view/Attractions/MattancheryPalace.dart';
+import 'package:worldcon/view/Attractions.dart';
 import 'package:worldcon/view/Downloads/Downloads.dart';
 import 'package:worldcon/Login.dart';
 import 'package:worldcon/view/Sample/sample.dart';

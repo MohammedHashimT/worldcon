@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:worldcon/view/Attendees.dart';
-import 'package:worldcon/view/Attractions/Attractions.dart';
+import 'package:worldcon/view/Attractions.dart';
 import 'package:worldcon/view/Downloads/Downloads.dart';
 import 'package:worldcon/view/Downloads/Parking_ins.dart';
 import 'package:worldcon/view/Exhibitors.dart';
+import 'package:worldcon/view/Feedback.dart';
+import 'package:worldcon/view/Lost.dart';
 import 'package:worldcon/view/Routemap_venue_layout.dart';
 import 'package:worldcon/view/Venue%20Layout/VENUE.dart';
 import 'package:worldcon/view/Venue%20Layout/Venue_layout.dart';
@@ -120,9 +122,13 @@ class _HomeScreenState extends State<HomeScreen> {
     MenuItem(
       title: "Lost & Found",
       icon: FontAwesomeIcons.question,
-      onTap: () {},
+      onTap: () {
+        Get.to(()=> LostScreen());
+      },
     ),
-    MenuItem(title: "Feedback", icon: FontAwesomeIcons.comment, onTap: () {}),
+    MenuItem(title: "Feedback", icon: FontAwesomeIcons.comment, onTap: () {
+      Get.to(()=> FeedbackScreen()) ;
+    }),
 
     MenuItem(
       title: "Refer Friend",

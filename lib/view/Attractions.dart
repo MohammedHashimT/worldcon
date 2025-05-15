@@ -100,7 +100,7 @@ class GridItem extends StatelessWidget {
           ),
         ),
 
-        // Main container
+
         Container(
           color: Colors.white,
           child: InkWell(

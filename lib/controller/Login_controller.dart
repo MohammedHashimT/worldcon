@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:worldcon/view/NavigationBar.dart';
-
 import '../service/Login_service.dart';
 
 class LoginController extends GetxController {

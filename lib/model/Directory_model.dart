@@ -8,6 +8,7 @@ class DirectoryModel {
     required this.designation,
     required this.profile,
   });
+
   factory DirectoryModel.fromJson(Map<String, dynamic> json) {
     return DirectoryModel(
       name: json['name'],
