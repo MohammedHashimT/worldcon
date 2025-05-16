@@ -9,12 +9,17 @@ class LostScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.orange[700],
         title: const Text(
           'Lost & Found',
           style: TextStyle(color: Colors.white),
         ),
+        actions: [
+          IconButton(onPressed: () {}, icon: Icon(Icons.add_circle_outline)),
+        ],
+
         iconTheme: const IconThemeData(color: Colors.white),
       ),
 
@@ -61,7 +66,7 @@ class LostScreen extends StatelessWidget {
                             text: 'Submitted by:',
                             style: TextStyle(color: Colors.grey, fontSize: 14),
                           ),
-                          TextSpan(text: 'wordlcon'),
+                          TextSpan(text: ' '),
                         ],
                       ),
                     ),
@@ -72,7 +77,7 @@ class LostScreen extends StatelessWidget {
                             text: 'Status:',
                             style: TextStyle(color: Colors.grey, fontSize: 14),
                           ),
-                          TextSpan(text: 'wordlcon'),
+                          TextSpan(text: item.status),
                         ],
                       ),
                     ),
@@ -84,7 +89,7 @@ class LostScreen extends StatelessWidget {
                             text: 'Description:',
                             style: TextStyle(color: Colors.grey, fontSize: 14),
                           ),
-                          TextSpan(text: 'wordlcon'),
+                          TextSpan(text: item.description),
                         ],
                       ),
                     ),

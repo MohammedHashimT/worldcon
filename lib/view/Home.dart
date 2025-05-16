@@ -9,6 +9,7 @@ import 'package:worldcon/view/Exhibitors.dart';
 import 'package:worldcon/view/Feedback.dart';
 import 'package:worldcon/view/Lost.dart';
 import 'package:worldcon/view/Routemap_venue_layout.dart';
+import 'package:worldcon/view/Sample/sample.dart';
 import 'package:worldcon/view/Venue%20Layout/VENUE.dart';
 import 'package:worldcon/view/Venue%20Layout/Venue_layout.dart';
 import 'package:worldcon/view/speakers.dart';
@@ -65,7 +66,9 @@ class _HomeScreenState extends State<HomeScreen> {
     MenuItem(
       title: "My Registration",
       icon: FontAwesomeIcons.solidRegistered,
-      onTap: () {},
+      onTap: () {
+        Get.to(()=> ProfileScreenAttendee());
+      },
     ),
     MenuItem(title: "Quiz", icon: FontAwesomeIcons.linesLeaning, onTap: () {}),
     MenuItem(title: "Gallery", icon: FontAwesomeIcons.images, onTap: () {}),
@@ -241,8 +244,8 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        //automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
+        //automaticallyImplyLeading: false,
 
         title: Image.asset('Assets/img/logo.jpg'),
         actions: [
