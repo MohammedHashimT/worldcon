@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:worldcon/controller/dwnld_certificate_controller.dart'; // Make sure this path is correct
+import 'package:worldcon/controller/feedback_controller.dart';
 import 'package:worldcon/view/Attendees.dart';
 import 'package:worldcon/view/Attractions.dart';
 import 'package:worldcon/view/Downloads/Downloads.dart';
@@ -8,9 +10,8 @@ import 'package:worldcon/view/Downloads/Parking_ins.dart';
 import 'package:worldcon/view/Exhibitors.dart';
 import 'package:worldcon/view/Feedback.dart';
 import 'package:worldcon/view/Lost.dart';
+import 'package:worldcon/view/My_registration.dart';
 import 'package:worldcon/view/Routemap_venue_layout.dart';
-import 'package:worldcon/view/Sample/sample.dart';
-import 'package:worldcon/view/Venue%20Layout/VENUE.dart';
 import 'package:worldcon/view/Venue%20Layout/Venue_layout.dart';
 import 'package:worldcon/view/speakers.dart';
 import '../controller/Banner_control.dart';
@@ -27,6 +28,9 @@ class HomeScreen extends StatefulWidget {
   HomeScreen({super.key});
 
   final BannerController bannerController = Get.put(BannerController());
+  final CertificateController certificateController = Get.put(
+    CertificateController(),
+  );
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -34,125 +38,157 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _currentBannerIndex = 0;
+  final double _horizontalMenuHeight = 120.0;
 
-  final List<MenuItem> _horizontalMenuItems = [
-    MenuItem(
-      title: "Today's Program",
-      icon: FontAwesomeIcons.calendarDay,
-      onTap: () {},
-    ),
-    MenuItem(
-      title: "Our Speakers",
-      icon: FontAwesomeIcons.microphoneLines,
-      onTap: () {
-        Get.to(() => Speakers());
-      },
-    ),
-    MenuItem(
-      title: "Scientific Program",
-      icon: FontAwesomeIcons.flaskVial,
-      onTap: () {},
-    ),
-  ];
-
-  final List<MenuItem> _quickLinks = [
-    MenuItem(
-      title: "Attendees",
-      icon: FontAwesomeIcons.users,
-      onTap: () {
-        Get.to(() => Attendees());
-      },
-    ),
-    MenuItem(
-      title: "My Registration",
-      icon: FontAwesomeIcons.solidRegistered,
-      onTap: () {
-        Get.to(()=> ProfileScreenAttendee());
-      },
-    ),
-    MenuItem(title: "Quiz", icon: FontAwesomeIcons.linesLeaning, onTap: () {}),
-    MenuItem(title: "Gallery", icon: FontAwesomeIcons.images, onTap: () {}),
-    MenuItem(
-      title: "Download Certificate",
-      icon: FontAwesomeIcons.fileArrowDown,
-      onTap: () {},
-    ),
-    MenuItem(
-      title: "Root map to Venue",
-      icon: FontAwesomeIcons.map,
-      onTap: () {
-        Get.to(() => RouteMap());
-      },
-    ),
-
-    MenuItem(
-      title: "Parking Instructions",
-      icon: FontAwesomeIcons.squareVirus,
-      onTap: () {
-        Get.to(() => ParkingIns());
-      },
-    ),
-
-    MenuItem(title: "Note", icon: FontAwesomeIcons.noteSticky, onTap: () {}),
-    MenuItem(
-      title: "Downloads",
-      icon: FontAwesomeIcons.download,
-      onTap: () {
-        Get.to(() => DownloadScreen());
-      },
-    ),
-    MenuItem(
-      title: "Attractions",
-      icon: FontAwesomeIcons.magnet,
-      onTap: () {
-        Get.to(AttractionScreen());
-      },
-    ),
-    MenuItem(
-      title: "Venue Layout",
-      icon: FontAwesomeIcons.building,
-      onTap: () {
-        Get.to(() => VenueLayoutScreen());
-      },
-    ),
-    MenuItem(
-      title: "Exhibitors",
-      icon: FontAwesomeIcons.layerGroup,
-      onTap: () {
-        Get.to(() => ExhibitorScreen());
-      },
-    ),
-    MenuItem(
-      title: "Lost & Found",
-      icon: FontAwesomeIcons.question,
-      onTap: () {
-        Get.to(()=> LostScreen());
-      },
-    ),
-    MenuItem(title: "Feedback", icon: FontAwesomeIcons.comment, onTap: () {
-      Get.to(()=> FeedbackScreen()) ;
-    }),
-
-    MenuItem(
-      title: "Refer Friend",
-      icon: FontAwesomeIcons.userGroup,
-      onTap: () {},
-    ),
-  ];
+  late final List<MenuItem> _horizontalMenuItems;
+  late final List<MenuItem> _quickLinks;
 
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(milliseconds: 100), () {
+
+    _horizontalMenuItems = [
+      MenuItem(
+        title: "Today's Program",
+        icon: FontAwesomeIcons.calendarDay,
+        onTap: () {
+
+        },
+      ),
+      MenuItem(
+        title: "Our Speakers",
+        icon: FontAwesomeIcons.microphoneLines,
+        onTap: () {
+          Get.to(() => Speakers());
+        },
+      ),
+      MenuItem(
+        title: "Scientific Program",
+        icon: FontAwesomeIcons.flaskVial,
+        onTap: () {
+        },
+      ),
+    ];
+
+    _quickLinks = [
+      MenuItem(
+        title: "Attendees",
+        icon: FontAwesomeIcons.users,
+        onTap: () {
+          Get.to(() => Attendees());
+        },
+      ),
+      MenuItem(
+        title: "My Registration",
+        icon: FontAwesomeIcons.solidRegistered,
+        onTap: () {
+          Get.to(() => MyRegstrScreen());
+        },
+      ),
+      MenuItem(
+        title: "Quiz",
+        icon: FontAwesomeIcons.linesLeaning,
+        onTap: () {
+        },
+      ),
+      MenuItem(
+        title: "Gallery",
+        icon: FontAwesomeIcons.images,
+        onTap: () {
+        },
+      ),
+      MenuItem(
+        title: "Download Certificate",
+        icon: FontAwesomeIcons.fileArrowDown,
+        onTap: () {
+          widget.certificateController.shareCertificateFile();
+          },
+      ),
+      MenuItem(
+        title: "Root map to Venue",
+        icon: FontAwesomeIcons.map,
+        onTap: () {
+          Get.to(() => RouteMap());
+        },
+      ),
+      MenuItem(
+        title: "Parking Instructions",
+        icon: FontAwesomeIcons.squareParking,
+        onTap: () {
+          Get.to(() => ParkingIns());
+        },
+      ),
+      MenuItem(
+        title: "Note",
+        icon: FontAwesomeIcons.noteSticky,
+        onTap: () {
+        },
+      ),
+      MenuItem(
+        title: "Downloads",
+        icon: FontAwesomeIcons.download,
+        onTap: () {
+          Get.to(() => DownloadScreen());
+        },
+      ),
+      MenuItem(
+        title: "Attractions",
+        icon: FontAwesomeIcons.magnet,
+        onTap: () {
+          Get.to(() => AttractionScreen());
+        },
+      ),
+      MenuItem(
+        title: "Venue Layout",
+        icon: FontAwesomeIcons.building,
+        onTap: () {
+          Get.to(() => VenueLayoutScreen());
+        },
+      ),
+      MenuItem(
+        title: "Exhibitors",
+        icon: FontAwesomeIcons.layerGroup,
+        onTap: () {
+          Get.to(() => ExhibitorScreen());
+        },
+      ),
+      MenuItem(
+        title: "Lost & Found",
+        icon: FontAwesomeIcons.question,
+        onTap: () {
+          Get.to(() => LostScreen());
+        },
+      ),
+      MenuItem(
+        title: "Feedback",
+        icon: FontAwesomeIcons.comment,
+        onTap: () {
+          Get.to(() => FeedbackScreen());
+        },
+      ),
+      MenuItem(
+        title: "Refer Friend",
+        icon: FontAwesomeIcons.userGroup,
+        onTap: () {
+        },
+      ),
+    ];
+
+    if (widget.bannerController.banners.isEmpty &&
+        !widget.bannerController.isLoading.value) {
+      widget.bannerController.fetchBanners();
+    }
+
+    if (widget.certificateController.certificateInfo.value == null &&
+        !widget.certificateController.isLoadingInfo.value) {
+      widget.certificateController.fetchCertificateInfo();
+    }
+
+    Future.delayed(const Duration(milliseconds: 500), () {
       if (mounted) {
         _startSlideshow();
       }
     });
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 
   void _startSlideshow() {
@@ -170,61 +206,32 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  Widget _buildQuickLinkItem(MenuItem item) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.15),
-            spreadRadius: 1,
-            blurRadius: 3,
-            offset: const Offset(0, 1),
-          ),
-        ],
-      ),
-      child: ListTile(
-        leading: FaIcon(item.icon, color: Colors.red, size: 22),
-        title: Text(
-          item.title,
-          style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
-        ),
-        trailing: const Icon(
-          Icons.arrow_forward_ios_rounded,
-          size: 16,
-          color: Colors.grey,
-        ),
-        onTap: item.onTap ?? () {},
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-      ),
-    );
-  }
-
   Widget _buildHorizontalMenuItem(MenuItem item, BuildContext context) {
     return Expanded(
       child: InkWell(
         onTap: item.onTap ?? () {},
+        borderRadius: BorderRadius.circular(8.0),
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 12.0),
+          padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 4.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Colors.grey[50],
+                  color: Colors.red.withOpacity(0.1),
                   shape: BoxShape.circle,
                 ),
-                child: FaIcon(item.icon, color: Colors.red, size: 30),
+                child: FaIcon(item.icon, color: Colors.red, size: 26),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 6),
               Text(
                 item.title,
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 12,
-                  color: Colors.grey[700],
+                  fontSize: 11,
+                  color: Colors.grey[800],
                   fontWeight: FontWeight.w500,
                 ),
                 maxLines: 2,
@@ -237,154 +244,69 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final Color primaryColor = Colors.orange[700]!;
+  Widget _buildQuickLinksCard() {
+    List<Widget> linkWidgets = [];
+    for (int i = 0; i < _quickLinks.length; i++) {
+      linkWidgets.add(
+        ListTile(
+          leading: FaIcon(_quickLinks[i].icon, color: Colors.red, size: 22),
+          title: Text(
+            _quickLinks[i].title,
+            style: const TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.w500,
+              color: Colors.black87,
+            ),
+          ),
+          trailing: Icon(
+            Icons.arrow_forward_ios_rounded,
+            size: 16,
+            color: Colors.grey.shade400,
+          ),
+          onTap: _quickLinks[i].onTap,
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 6,
+          ),
+          dense: true,
+        ),
+      );
+      if (i < _quickLinks.length - 1) {
+        linkWidgets.add(
+          const Divider(
+            height: 0,
+            thickness: 1,
+            indent: 16,
+            endIndent: 16,
+            color: Color(0xFFF0F0F0),
+          ),
+        );
+      }
+    }
 
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        //automaticallyImplyLeading: false,
-
-        title: Image.asset('Assets/img/logo.jpg'),
-        actions: [
-          _buildAppBarAction(FontAwesomeIcons.qrcode, () {}),
-          _buildAppBarAction(FontAwesomeIcons.mapMarkerAlt, () {}),
-          _buildAppBarAction(FontAwesomeIcons.globe, () {}),
-          const SizedBox(width: 8),
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            spreadRadius: 1,
+            blurRadius: 5,
+            offset: const Offset(0, 2),
+          ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Obx(() {
-              if (widget.bannerController.isLoading.value) {
-                return _buildBannerPlaceholder(
-                  context,
-                  child: const Center(child: CircularProgressIndicator()),
-                );
-              } else if (widget.bannerController.errorMessage.value != null) {
-                return _buildBannerPlaceholder(
-                  context,
-                  child: Center(
-                    child: Text(
-                      widget.bannerController.errorMessage.value!,
-                      style: const TextStyle(color: Colors.white),
-                    ),
-                  ),
-                  color: Colors.redAccent,
-                );
-              } else if (widget.bannerController.banners.isNotEmpty) {
-                final currentBanner =
-                    widget.bannerController.banners[_currentBannerIndex];
-                return Container(
-                  width: double.infinity,
-                  height: MediaQuery.of(context).size.height * 0.28,
-                  child:
-                      currentBanner.imagePath != null &&
-                              currentBanner.imagePath!.isNotEmpty
-                          ? Image.network(
-                            currentBanner.imagePath!,
-                            width: double.infinity,
-                            fit: BoxFit.cover,
-                            loadingBuilder: (context, child, loadingProgress) {
-                              if (loadingProgress == null) return child;
-                              return const Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            },
-                            errorBuilder: (context, error, stackTrace) {
-                              return _buildBannerPlaceholder(
-                                context,
-                                child: const Center(
-                                  child: Icon(
-                                    Icons.broken_image,
-                                    color: Colors.grey,
-                                    size: 50,
-                                  ),
-                                ),
-                              );
-                            },
-                          )
-                          : _buildBannerPlaceholder(
-                            context,
-                            child: const Center(
-                              child: Text('Image not available'),
-                            ),
-                          ),
-                );
-              } else {
-                return _buildBannerPlaceholder(
-                  context,
-                  child: const Center(child: Text('No banners available.')),
-                );
-              }
-            }),
-
-            Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 8.0,
-                vertical: 8.0,
-              ),
-              margin: const EdgeInsets.symmetric(
-                horizontal: 16.0,
-                vertical: 16.0,
-              ),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12.0),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.2),
-                    spreadRadius: 2,
-                    blurRadius: 5,
-                    offset: const Offset(0, 3),
-                  ),
-                ],
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children:
-                    _horizontalMenuItems
-                        .map((item) => _buildHorizontalMenuItem(item, context))
-                        .toList(),
-              ),
-            ),
-
-            Padding(
-              padding: const EdgeInsets.only(
-                left: 20.0,
-                right: 16.0,
-                top: 8.0,
-                bottom: 10.0,
-              ),
-              child: Text(
-                'Quick Links',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.grey[800],
-                ),
-              ),
-            ),
-
-            Column(
-              children:
-                  _quickLinks.map((item) => _buildQuickLinkItem(item)).toList(),
-            ),
-            const SizedBox(height: 20),
-          ],
-        ),
-      ),
+      clipBehavior: Clip.antiAlias,
+      child: Column(mainAxisSize: MainAxisSize.min, children: linkWidgets),
     );
   }
 
   Widget _buildAppBarAction(IconData icon, VoidCallback onPressed) {
     return IconButton(
       onPressed: onPressed,
-      icon: FaIcon(icon, color: Colors.orange[700], size: 20),
+      icon: FaIcon(icon, color: Colors.orange.shade700, size: 20),
       splashRadius: 22,
       padding: const EdgeInsets.all(10),
     );
@@ -400,6 +322,180 @@ class _HomeScreenState extends State<HomeScreen> {
       height: MediaQuery.of(context).size.height * 0.28,
       color: color ?? Colors.grey[200],
       child: child,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.grey[50],
+      body: CustomScrollView(
+        slivers: <Widget>[
+          SliverAppBar(
+            backgroundColor: Colors.white,
+            elevation: 1.0,
+            floating: true,
+            snap: false,
+            title: Padding(
+              padding: const EdgeInsets.only(left: 0.0),
+              child: Image.asset(
+                'Assets/img/logo.jpg',
+              ),
+            ),
+            centerTitle: false,
+            actions: [
+              _buildAppBarAction(FontAwesomeIcons.qrcode, () {}),
+              _buildAppBarAction(FontAwesomeIcons.mapMarkerAlt, () {}),
+              _buildAppBarAction(FontAwesomeIcons.globe, () {}),
+              const SizedBox(width: 8),
+            ],
+          ),
+          SliverList(
+            delegate: SliverChildListDelegate([
+              Obx(() {
+                if (widget.bannerController.isLoading.value &&
+                    widget.bannerController.banners.isEmpty) {
+                  return _buildBannerPlaceholder(
+                    context,
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.orange.shade700,
+                      ),
+                    ),
+                  );
+                } else if (widget.bannerController.errorMessage.value != null) {
+                  return _buildBannerPlaceholder(
+                    context,
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          widget.bannerController.errorMessage.value!,
+                          style: TextStyle(
+                            color: Colors.red.shade700,
+                            fontSize: 12,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                    color: Colors.red.withOpacity(0.1),
+                  );
+                } else if (widget.bannerController.banners.isNotEmpty) {
+                  final currentBanner =
+                      widget.bannerController.banners[_currentBannerIndex];
+                  return SizedBox(
+                    width: double.infinity,
+                    height: MediaQuery.of(context).size.height * 0.28,
+                    child:
+                        currentBanner.imagePath != null &&
+                                currentBanner.imagePath!.isNotEmpty
+                            ? Image.network(
+                              currentBanner.imagePath!,
+                              width: double.infinity,
+                              fit: BoxFit.cover,
+                              loadingBuilder: (
+                                context,
+                                child,
+                                loadingProgress,
+                              ) {
+                                if (loadingProgress == null) return child;
+                                return Center(
+                                  child: CircularProgressIndicator(
+                                    color: Colors.orange.shade700,
+                                  ),
+                                );
+                              },
+                              errorBuilder: (context, error, stackTrace) {
+                                return _buildBannerPlaceholder(
+                                  context,
+                                  child: const Center(
+                                    child: Icon(
+                                      Icons.broken_image_outlined,
+                                      color: Colors.grey,
+                                      size: 50,
+                                    ),
+                                  ),
+                                );
+                              },
+                            )
+                            : _buildBannerPlaceholder(
+                              context,
+                              child: const Center(
+                                child: Text(
+                                  'Image not available',
+                                  style: TextStyle(color: Colors.grey),
+                                ),
+                              ),
+                            ),
+                  );
+                } else {
+                  return _buildBannerPlaceholder(
+                    context,
+                    child: const Center(
+                      child: Text(
+                        'No banners available.',
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                    ),
+                  );
+                }
+              }),
+              Transform.translate(
+                offset: Offset(0, -_horizontalMenuHeight / 2.2),
+                child: Container(
+                  height: _horizontalMenuHeight,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8.0,
+                    vertical: 0,
+                  ),
+                  margin: const EdgeInsets.symmetric(horizontal: 16.0),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12.0),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        spreadRadius: 1,
+                        blurRadius: 8,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children:
+                        _horizontalMenuItems
+                            .map(
+                              (item) => _buildHorizontalMenuItem(item, context),
+                            )
+                            .toList(),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(
+                  left: 20.0,
+                  right: 16.0,
+                  top: 0,
+                  bottom: 10.0,
+                ),
+                child: Text(
+                  'Quick Links',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey[800],
+                  ),
+                ),
+              ),
+              _buildQuickLinksCard(),
+              const SizedBox(height: 20),
+            ]),
+          ),
+        ],
+      ),
     );
   }
 }

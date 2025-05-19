@@ -88,7 +88,7 @@ class _DemographicsState extends State<Demographics> {
   @override
   Widget build(BuildContext context) {
     final Color activeBorderColor = Colors.orange.shade600;
-    final Color inactiveBorderColor = Colors.grey.shade300;
+    final Color inactiveBorderColor = Colors.white;
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -163,7 +163,7 @@ class _DemographicsState extends State<Demographics> {
                 expandedContent: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Center(child: Text("$Address", style: const TextStyle(fontSize: 14))),
+                    Center(child: Text(Address, style: const TextStyle(fontSize: 14))),
                   ],
                 ),
               ),

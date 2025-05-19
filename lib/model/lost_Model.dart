@@ -1,25 +1,36 @@
-class LostModel {
+class UserModel {
   final String? name;
+
+  UserModel({this.name});
+
+  factory UserModel.fromJson(Map<String, dynamic> json) {
+    return UserModel(name: json['name']);
+  }
+}
+
+class LostModel {
+  final String? lostname;
   final String? description;
   final String? status;
+  final UserModel? user;
 
-  LostModel({this.name, this.description, this.status});
+  LostModel({this.lostname, this.description, this.status, this.user});
 
   factory LostModel.fromJson(Map<String, dynamic> json) {
     return LostModel(
-      name: json['name'],
+      lostname: json['name'],
       description: json['description'],
       status: json['status'],
+      user:
+          json['user'] != null
+              ? UserModel.fromJson(json['user'] as Map<String, dynamic>)
+              : null,
     );
   }
 
-  Map<String,dynamic>toJson(){
-    return{
-      'name':name,
-      'description': description,
-
-    };
-}
+  Map<String, dynamic> toJson() {
+    return {'name': lostname, 'description': description};
+  }
 }
 
 class LostResponse {

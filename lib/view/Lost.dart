@@ -41,6 +41,7 @@ class LostScreen extends StatelessWidget {
           itemBuilder: (context, index) {
             final item = data[index];
 
+
             return Card(
               elevation: 1,
               child: ListTile(
@@ -51,7 +52,7 @@ class LostScreen extends StatelessWidget {
                         text: 'Name:',
                         style: TextStyle(color: Colors.grey, fontSize: 14),
                       ),
-                      TextSpan(text: item.name),
+                      TextSpan(text: item.lostname),
                     ],
                   ),
                 ),
