@@ -25,7 +25,7 @@ class FeedbackController extends GetxController {
       selectedAnswers.clear();
 
       final FeedbackResponse responseModel =
-      await _feedbackService.fetchFeedbackData();
+          await _feedbackService.fetchFeedbackData();
 
       if (responseModel.status.toLowerCase() == "success" &&
           responseModel.data.isNotEmpty) {
@@ -35,18 +35,18 @@ class FeedbackController extends GetxController {
         feedbackList.clear();
       } else {
         errorMessage.value =
-        "Failed to load feedback questions (API status: ${responseModel.status}).";
+            "Failed to load feedback questions (API status: ${responseModel.status}).";
         feedbackList.clear();
       }
     } on FormatException catch (e) {
       debugPrint("Controller FormatException: ${e.message}");
       errorMessage.value =
-      'Data from server is not in the expected format. Details: ${e.message}';
+          'Data from server is not in the expected format. Details: ${e.message}';
       feedbackList.clear();
     } catch (e) {
       debugPrint("Controller Exception: ${e.toString()}");
       errorMessage.value =
-      'An error occurred while fetching feedback: ${e.toString()}';
+          'An error occurred while fetching feedback: ${e.toString()}';
       feedbackList.clear();
     } finally {
       isLoading.value = false;
@@ -70,29 +70,14 @@ class FeedbackController extends GetxController {
     }
 
     List<Map<String, dynamic>> submissions = [];
-    bool hasValidSubmissions = true; // Flag to check data integrity
+    bool hasValidSubmissions = true;
 
     selectedAnswers.forEach((questionId, optionId) {
-      // **CRUCIAL DEBUG PRINT AND CHECK**
-      debugPrint("Processing for submission - Question ID: $questionId, Option ID: $optionId");
-      submissions.add({
-        "question_id": questionId, // This is the key being sent. Verify with API.
-        "option_id": optionId,
-        // "comment": "some_comment_if_you_collect_it"
-      });
-    });
-
-    if (!hasValidSubmissions) {
-      Get.snackbar(
-        "Data Error",
-        "There was an issue with the selected answers. Please try again.",
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
+      debugPrint(
+        "Processing for submission - Question ID: $questionId, Option ID: $optionId",
       );
-      return;
-    }
-
+      submissions.add({"question_id": questionId, "option_id": optionId});
+    });
 
     debugPrint("Submitting feedback payload: $submissions");
     isLoading.value = true;
@@ -110,9 +95,7 @@ class FeedbackController extends GetxController {
           colorText: Colors.white,
         );
         selectedAnswers.clear();
-        // Optionally: fetchFeedbackItems(); // To refresh or show a "thank you" state
       } else {
-        // This else block might not be reached if _feedbackService.submitFeedbackData throws an Exception on failure
         errorMessage.value = "Failed to submit feedback. Please try again.";
         Get.snackbar(
           "Error",
@@ -123,12 +106,11 @@ class FeedbackController extends GetxController {
         );
       }
     } catch (e) {
-      // The exception 'e' from the service will be caught here
       debugPrint("Controller submitFeedback Exception: ${e.toString()}");
-      errorMessage.value = e.toString(); // Show the specific error from the service
+      errorMessage.value = e.toString();
       Get.snackbar(
         "Error",
-        e.toString(), // Display the more specific error message from the exception
+        e.toString(),
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.red,
         colorText: Colors.white,

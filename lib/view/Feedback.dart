@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:worldcon/controller/feedback_controller.dart';
+import 'package:worldcon/controller/feedback_post_controller.dart';
 import 'package:worldcon/model/feedback_model.dart';
 
 class FeedbackScreen extends StatelessWidget {
   FeedbackScreen({super.key});
 
   final FeedbackController feedbackController = Get.put(FeedbackController());
+  final FeedbackPostController feedbackPostController = Get.put(
+    FeedbackPostController(),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -134,10 +138,7 @@ class FeedbackScreen extends StatelessWidget {
                     )
                   else
                     const Padding(
-                      padding: EdgeInsets.only(
-                        left: 16.0,
-                        top: 4.0,
-                      ),
+                      padding: EdgeInsets.only(left: 16.0, top: 4.0),
                       child: Text(
                         "No options available for this question.",
                         style: TextStyle(
@@ -150,10 +151,7 @@ class FeedbackScreen extends StatelessWidget {
                   if (questionItem.hasComments == 1) ...[
                     const SizedBox(height: 10),
                     Padding(
-                      padding: const EdgeInsets.only(
-                        left: 0.0,
-                        right: 0.0,
-                      ),
+                      padding: const EdgeInsets.only(left: 0.0, right: 0.0),
                       child: TextField(
                         decoration: InputDecoration(
                           hintText: 'Optional comments...',
@@ -209,7 +207,8 @@ class FeedbackScreen extends StatelessWidget {
         () =>
             feedbackController.feedbackList.isNotEmpty &&
                     feedbackController.errorMessage.value == null &&
-                    !feedbackController.isLoading.value
+                    !feedbackController.isLoading.value &&
+                    !feedbackPostController.isSubmitting.value
                 ? Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: ElevatedButton(
@@ -224,12 +223,62 @@ class FeedbackScreen extends StatelessWidget {
                       ),
                     ),
                     onPressed: () {
-                      feedbackController.submitFeedback();
+                      List<Map<String, dynamic>> submissionsData = [];
+                      feedbackController.selectedAnswers.forEach((
+                        questionId,
+                        optionId,
+                      ) {
+                        submissionsData.add({
+                          "question_id": questionId,
+                          "option_id": optionId,
+                        });
+                      });
+
+                      if (submissionsData.isEmpty &&
+                          feedbackController.feedbackList.any(
+                            (q) => q.options.isNotEmpty,
+                          )) {
+                        Get.snackbar(
+                          "Info",
+                          "Please answer at least one question.",
+                          snackPosition: SnackPosition.BOTTOM,
+                        );
+                        return;
+                      }
+                      feedbackPostController
+                          .submitFeedback(submissionsData)
+                          .then((_) {
+                            if (feedbackPostController
+                                .submissionSuccess
+                                .value) {
+                              feedbackController.selectedAnswers.clear();
+                            }
+                          });
                     },
                     child: const Text('Submit Feedback'),
                   ),
                 )
-                : const SizedBox.shrink(),
+                : (feedbackPostController.isSubmitting.value
+                    ? Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.grey.shade400,
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          minimumSize: const Size(double.infinity, 48),
+                        ),
+                        onPressed: null,
+                        child: const SizedBox(
+                          width: 24,
+                          height: 24,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 3,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    )
+                    : const SizedBox.shrink()),
       ),
     );
   }
