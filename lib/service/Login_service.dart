@@ -10,6 +10,7 @@ class ApiService extends GetConnect {
 
   Future<Response> verifyOtp(String email, String otp) {
     final body = {'email': email, 'otp': otp};
+
     if (otp == "123456") {
       return Future.value(
         Response(

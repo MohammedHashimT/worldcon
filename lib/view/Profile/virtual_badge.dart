@@ -42,9 +42,6 @@ class VirtualBadge extends StatelessWidget {
                 //   backgroundColor: Colors.white,
                 //   errorCorrectionLevel: ErrorCorrectionLevel.low,
                 // )
-
-
-
                 const SizedBox(height: 16),
                 Text(
                   userData.name ?? '',

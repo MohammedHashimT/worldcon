@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:worldcon/model/feedback_model.dart';
+import 'package:worldcon/Feedback/feedback_model.dart';
 
 class FeedbackService {
   static const String baseUrl =
@@ -30,5 +30,7 @@ class FeedbackService {
     }
   }
 
-  submitFeedbackData(List<Map<String, dynamic>> submissions) {}
+  submitFeedbackData(List<Map<String, dynamic>> submissions) {
+
+  }
 }

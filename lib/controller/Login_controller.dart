@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:worldcon/view/NavigationBar.dart';
+import '../Shared_Preferences/shared_preferences.dart';
 import '../service/Login_service.dart';
 
 class LoginController extends GetxController {
   final ApiService _apiService = Get.put(ApiService());
+  final TokenService _tokenService = Get.find<TokenService>();
 
   final emailController = TextEditingController();
   final otpController = TextEditingController();
@@ -77,6 +79,11 @@ class LoginController extends GetxController {
       );
 
       if (response.isOk && response.body['status'] == true) {
+
+        ///shared preference
+        final String token = response.body['token'];
+        await _tokenService.saveToken(token);
+
         Get.snackbar(
           "Success",
           response.body['message'] ?? "Login successful!",

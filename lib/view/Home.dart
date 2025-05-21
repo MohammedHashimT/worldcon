@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:worldcon/controller/dwnld_certificate_controller.dart'; // Make sure this path is correct
-import 'package:worldcon/controller/feedback_controller.dart';
+import 'package:worldcon/Feedback/feedback_controller.dart';
 import 'package:worldcon/view/Attendees.dart';
 import 'package:worldcon/view/Attractions.dart';
 import 'package:worldcon/view/Downloads/Downloads.dart';
 import 'package:worldcon/view/Downloads/Parking_ins.dart';
 import 'package:worldcon/view/Exhibitors.dart';
-import 'package:worldcon/view/Feedback.dart';
+import 'package:worldcon/Feedback/Feedback.dart';
 import 'package:worldcon/view/Lost.dart';
 import 'package:worldcon/view/My_registration.dart';
 import 'package:worldcon/view/Routemap_venue_layout.dart';

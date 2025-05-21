@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:get/get.dart';
+import 'package:worldcon/Shared_Preferences/shared_preferences.dart';
 import 'package:worldcon/view/Attractions.dart';
 import 'package:worldcon/view/Downloads/Downloads.dart';
 import 'package:worldcon/Login.dart';
@@ -18,7 +19,9 @@ import 'package:worldcon/view/Venue%20Layout/VENUE.dart';
 import 'package:worldcon/view/Venue%20Layout/Venue_layout.dart';
 import 'package:worldcon/view/speakers.dart';
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Get.putAsync(() => TokenService().init());
   runApp(const MyApp());
 }
 

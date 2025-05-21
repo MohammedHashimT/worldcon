@@ -29,7 +29,4 @@ class AttendeeService {
     return true;
   }
 
-  static Future<bool> removeAttendee(String id) async {
-    return true;
-  }
 }

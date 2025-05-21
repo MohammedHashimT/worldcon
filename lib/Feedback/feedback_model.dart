@@ -16,6 +16,13 @@ class OptionModel {
       optionValue: json['option_value'] as String? ?? '',
     );
   }
+  Map<String,dynamic>toJson(){
+    return{
+      'id':id,
+      'question_id':questionId,
+      'option_value':optionValue
+    };
+  }
 }
 
 class FeedbackModel {
@@ -30,7 +37,7 @@ class FeedbackModel {
     required this.question,
     required this.type,
     required this.hasComments,
-    required this.options,
+    required this.options, required String userId,
   });
 
   factory FeedbackModel.fromJson(Map<String, dynamic> json) {
@@ -47,13 +54,21 @@ class FeedbackModel {
 
     return FeedbackModel(
       id: json['id'] as int,
-      question:
-          json['question_value'] as String? ??
-          'No question text',
+      question: json['question_value'] as String? ?? 'No question text',
       type: json['type'] as String? ?? 'unknown',
       hasComments: json['has_comments'] as int? ?? 0,
-      options: parsedOptions,
+      options: parsedOptions, userId: '',
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'question_value': question,
+      'type': type,
+      'has_comments': hasComments,
+      'options':options,
+    };
   }
 }
 
@@ -64,8 +79,7 @@ class FeedbackResponse {
   FeedbackResponse({required this.status, required this.data});
 
   factory FeedbackResponse.fromJson(Map<String, dynamic> json) {
-    var dataListFromJson =
-        json['data'] as List<dynamic>?;
+    var dataListFromJson = json['data'] as List<dynamic>?;
     List<FeedbackModel> parsedData =
         dataListFromJson != null
             ? dataListFromJson

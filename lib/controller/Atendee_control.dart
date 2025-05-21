@@ -32,18 +32,5 @@ class AttendeeController extends GetxController {
     }
   }
 
-  Future<void> removeAttendee(AttendeeModel attendee) async {
-    try {
-      final success = await AttendeeService.removeAttendee(
-        attendee.email,
-      );
-      if (success) {
-        attendees.remove(attendee);
-      } else {
-        Get.snackbar('Error', 'Failed to remove attendee');
-      }
-    } catch (e) {
-      Get.snackbar('Error', 'Failed to remove attendee');
-    }
-  }
+
 }
