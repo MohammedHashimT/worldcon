@@ -36,12 +36,16 @@ class VirtualBadge extends StatelessWidget {
                 Image.asset('Assets/img/logo.jpg', height: 100),
                 const SizedBox(height: 20),
 
-                // NativeQr(
-                //   data: "Reg No: 12345",
-                //   color: Colors.black,
-                //   backgroundColor: Colors.white,
-                //   errorCorrectionLevel: ErrorCorrectionLevel.low,
-                // )
+
+                  QrImageView(
+                    data: "Reg No: ${userData.regno}",
+                    version: QrVersions.auto,
+                    size: 200,
+                    gapless: false,
+                    errorCorrectionLevel: QrErrorCorrectLevel.L,
+                  ),
+
+
                 const SizedBox(height: 16),
                 Text(
                   userData.name ?? '',
