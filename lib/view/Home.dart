@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:worldcon/controller/dwnld_certificate_controller.dart'; // Make sure this path is correct
+import 'package:worldcon/controller/dwnld_certificate_controller.dart';
 import 'package:worldcon/Feedback/feedback_controller.dart';
 import 'package:worldcon/view/Attendees.dart';
 import 'package:worldcon/view/Attractions.dart';

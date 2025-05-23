@@ -1,28 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:worldcon/Feedback/feedback_controller.dart';
-import 'package:worldcon/Feedback/feedback_post_controller.dart';
-import 'package:worldcon/Feedback/feedback_model.dart';
-import 'package:worldcon/view/NavigationBar.dart';
-import 'feedback_submission_model.dart';
-
+import 'feedback_controller.dart';
 
 class FeedbackScreen extends StatelessWidget {
   FeedbackScreen({super.key});
 
-  final FeedbackController feedbackController = Get.put(FeedbackController());
-  final FeedbackPostController feedbackPostController=Get.put(FeedbackPostController());
-
-  final selectedAnswers = [
-    FeedbackSubmissionModel(questionid: 5, optionid: 15),
-    FeedbackSubmissionModel(questionid: 6, optionid: 17),
-    FeedbackSubmissionModel(questionid: 7, optionid: 21),
-    FeedbackSubmissionModel(questionid: 12, optionid: 40),
-    FeedbackSubmissionModel(questionid: 13, optionid: 47),
-    FeedbackSubmissionModel(questionid: 14, optionid: 50),
-    FeedbackSubmissionModel(questionid: 15, optionid: 52),
-  ];
-
+  final FeedbackPageController controller = Get.put(FeedbackPageController());
 
   @override
   Widget build(BuildContext context) {
@@ -38,152 +21,148 @@ class FeedbackScreen extends StatelessWidget {
         ),
         iconTheme: const IconThemeData(color: Colors.white),
       ),
-
-      body: Obx(() {
-        if (feedbackController.isLoading.value) {
-          return const Center(child: CircularProgressIndicator());
-        }
-        if (feedbackController.errorMessage.value != null) {
-          return Center(child: Text(feedbackController.errorMessage.value!));
-        }
-        if (feedbackController.feedbackList.isEmpty && !feedbackController.isLoading.value) {
-          return const Center(child: Text("No feedback questions available."));
-        }
-
-        return ListView.separated(
-          padding: const EdgeInsets.only(
-            bottom: 80,
-          ),
-          itemCount: feedbackController.feedbackList.length,
-          separatorBuilder:
-              (context, index) => const Divider(
-            height: 1,
-            thickness: 1,
-            indent: 16,
-            endIndent: 16,
-            color: Color(0xFFE0E0E0),
-          ),
-          itemBuilder: (context, index) {
-            final question = feedbackController.feedbackList[index];
-
-            return Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16.0,
-                vertical: 8.0,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ListTile(
-                    contentPadding: EdgeInsets.zero,
-                    title: Text(
-                      question.question,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                  ...question.options.map((option) {
-                    return Obx(
-                          () => RadioListTile<int>(
-                        title: Text(option.optionValue),
-                        value: option.id,
-                        groupValue:
-                        feedbackController.selectedAnswers[question.id],
-                        onChanged: (val) {
-                          if (val != null) {
-                            feedbackController.selectedAnswers[question.id] = val;
-                          }
-                        },
-                        activeColor: primaryOrange,
-                        dense: true,
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 0,
+      bottomNavigationBar: BottomAppBar(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          child: Obx(
+            () => ElevatedButton(
+              style: ElevatedButton.styleFrom(backgroundColor: primaryOrange),
+              onPressed:
+                  controller.isLoadingSubmit.value ||
+                          controller.isLoadingFetch.value
+                      ? null
+                      : controller.submitFeedback,
+              child:
+                  controller.isLoadingSubmit.value
+                      ? const SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                          strokeWidth: 2,
                         ),
+                      )
+                      : const Text(
+                        'Submit',
+                        style: TextStyle(color: Colors.white),
                       ),
-                    );
-                  }),
-                ],
-              ),
-            );
-          },
-        );
-      }),
-
-
-
-      bottomNavigationBar: Container(
-        color: Colors.white,
-        padding: const EdgeInsets.all(16),
-        child: SizedBox(
-          width: double.infinity,
-          height: 50,
-          child: Obx(() => ElevatedButton(
-            onPressed: feedbackPostController.isLoading.value
-                ? null
-                : () async {
-              List<FeedbackSubmissionModel> submissionsToPost = [];
-              feedbackController.selectedAnswers.forEach((questionId, optionId) {
-                submissionsToPost.add(FeedbackSubmissionModel(
-                  questionid: questionId,
-                  optionid: optionId,
-                ));
-              });
-
-              if (submissionsToPost.isEmpty && feedbackController.feedbackList.isNotEmpty) {
-                Get.snackbar(
-                    "No Answers",
-                    "Please select an answer for at least one question.",
-                    snackPosition: SnackPosition.BOTTOM
-                );
-                return;
-              }
-
-              await feedbackPostController.submitFeedback(submissionsToPost);
-
-              if (feedbackPostController.isSuccess.value) {
-                Get.offAll(() => CustomNavigationBar());
-                Future.delayed(const Duration(milliseconds: 200), () {
-                  Get.snackbar(
-                      "Success",
-                      "Feedback submitted successfully!",
-                      snackPosition: SnackPosition.BOTTOM
-                  );
-                });
-              } else {
-                Get.snackbar(
-                    "Error",
-                    "Failed to submit feedback. Please try again.",
-                    snackPosition: SnackPosition.BOTTOM,
-                    backgroundColor: Colors.red,
-                    colorText: Colors.white
-                );
-              }
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor:
-              feedbackPostController.isLoading.value ? Colors.grey : primaryOrange,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
             ),
-            child: feedbackPostController.isLoading.value
-                ? const SizedBox(
-              height: 24,
-              width: 24,
-              child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                strokeWidth: 3,
-              ),
-            )
-                : const Text(
-              'Submit',
-              style: TextStyle(color: Colors.white, fontSize: 16),
-            ),
-          )),
+          ),
         ),
       ),
+      body: Obx(() {
+        // This outer Obx handles changes to controller.feedbackList
+        if (controller.isLoadingFetch.value) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        if (controller.errorMessage.value != null) {
+          return Center(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    controller.errorMessage.value!,
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () => controller.refreshFeedbackPage(),
+                    child: const Text("Retry"),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+        if (controller.feedbackList.isEmpty &&
+            !controller.isLoadingFetch.value) {
+          return Center(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    "No feedback questions available at the moment.",
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () => controller.refreshFeedbackPage(),
+                    child: const Text("Refresh"),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+
+        return RefreshIndicator(
+          onRefresh: () => controller.refreshFeedbackPage(),
+          child: ListView.separated(
+            padding: const EdgeInsets.only(bottom: 80, top: 8),
+            itemCount: controller.feedbackList.length,
+            separatorBuilder:
+                (context, index) => const Divider(
+                  height: 1,
+                  thickness: 1,
+                  indent: 16,
+                  endIndent: 16,
+                  color: Color(0xFFE0E0E0),
+                ),
+            itemBuilder: (context, index) {
+              final question = controller.feedbackList[index];
+
+              return Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16.0,
+                  vertical: 8.0,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ListTile(
+                      contentPadding: EdgeInsets.zero,
+                      title: Text(
+                        "${index + 1}. ${question.question}",
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                    // REMOVED Obx from here
+                    Column(
+                      children:
+                          question.options.map((option) {
+                            return RadioListTile<String>(
+                              title: Text(option.optionValue),
+                              value: option.id.toString(),
+                              groupValue:
+                                  question
+                                      .selectedOptionId,
+                              onChanged: (String? val) {
+                                if (val != null) {
+                                  controller.selectAnswer(question.id, val);
+                                }
+                              },
+                              activeColor: primaryOrange,
+                              dense: true,
+                              contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 0,
+                              ),
+                            );
+                          }).toList(),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        );
+      }),
     );
   }
 }

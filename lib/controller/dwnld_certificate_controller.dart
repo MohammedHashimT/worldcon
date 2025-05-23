@@ -5,7 +5,6 @@ import 'package:dio/dio.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:worldcon/service/dwnld_certificate_service.dart';
-
 import '../model/dwnld_certificate_model.dart';
 
 class CertificateController extends GetxController {

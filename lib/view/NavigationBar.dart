@@ -16,7 +16,7 @@ class CustomNavigationBar extends StatefulWidget {
 class _CustomNavigationBarState extends State<CustomNavigationBar> {
   int _selectedIndex = 0;
 
-  static List<Widget> _widgetOptions = <Widget>[
+  static final List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
     NotificationScreen(),
     ProfileScreen(),
@@ -35,34 +35,33 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: _widgetOptions[_selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        selectedFontSize: 0,
-        unselectedFontSize: 0,
-        type: BottomNavigationBarType.fixed,
+       bottomNavigationBar: BottomNavigationBar(
+      backgroundColor: Colors.white,
+      currentIndex: _selectedIndex,
+      onTap: _onItemTapped,
+      selectedFontSize: 0,
+      unselectedFontSize: 0,
+      type: BottomNavigationBarType.fixed,
+      selectedIconTheme: IconThemeData(color: Colors.red, size: 40),
+      unselectedIconTheme: IconThemeData(size: 28),
+      items: const [
+        BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.notifications_active_outlined),
+          label: '',
+        ),
+        BottomNavigationBarItem(icon: Icon(Icons.person), label: ''),
+        BottomNavigationBarItem(
+          icon: FaIcon(FontAwesomeIcons.solidFolderClosed),
+          label: '',
+        ),
+        BottomNavigationBarItem(
+          icon: FaIcon(FontAwesomeIcons.circleInfo),
+          label: '',
+        ),
+      ],
+    ),
 
-        selectedIconTheme: IconThemeData(color: Colors.red, size: 40),
-
-        unselectedIconTheme: IconThemeData(size: 28),
-
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.notifications_active_outlined),
-            label: '',
-          ),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: ''),
-          BottomNavigationBarItem(
-            icon: FaIcon(FontAwesomeIcons.solidFolderClosed),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: FaIcon(FontAwesomeIcons.circleInfo),
-            label: '',
-          ),
-        ],
-      ),
     );
   }
 }

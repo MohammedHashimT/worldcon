@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:worldcon/controller/profile_controller.dart';
 
 class VirtualBadge extends StatelessWidget {
@@ -10,6 +11,12 @@ class VirtualBadge extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        iconTheme: IconThemeData(color: Colors.black),
+      ),
+
       body: SafeArea(
         child: Obx(() {
           if (profileController.isLoading.value) {

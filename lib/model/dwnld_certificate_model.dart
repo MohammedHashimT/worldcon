@@ -18,7 +18,6 @@ class CertificateDownloadInfo {
     );
   }
 
-  // Optional: toJson method if you ever need to serialize it back
   Map<String, dynamic> toJson() {
     return {
       'status': status,

@@ -16,12 +16,9 @@ class OptionModel {
       optionValue: json['option_value'] as String? ?? '',
     );
   }
-  Map<String,dynamic>toJson(){
-    return{
-      'id':id,
-      'question_id':questionId,
-      'option_value':optionValue
-    };
+
+  Map<String, dynamic> toJson() {
+    return {'id': id, 'question_id': questionId, 'option_value': optionValue};
   }
 }
 
@@ -31,14 +28,26 @@ class FeedbackModel {
   final String type;
   final int hasComments;
   final List<OptionModel> options;
+  String? selectedOptionId;
 
   FeedbackModel({
     required this.id,
     required this.question,
     required this.type,
     required this.hasComments,
-    required this.options, required String userId,
+    required this.options,
+    this.selectedOptionId,
   });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'question_value': question,
+      'type': type,
+      'has_comments': hasComments,
+      'options': options.map((o) => o.toJson()).toList(),
+    };
+  }
 
   factory FeedbackModel.fromJson(Map<String, dynamic> json) {
     var optionsListFromJson = json['options'] as List<dynamic>?;
@@ -52,23 +61,30 @@ class FeedbackModel {
                 .toList()
             : [];
 
+    String? preSelectedValue;
+    // if (json['feedback_submissions'] != null &&
+    //     (json['feedback_submissions'] as List).isNotEmpty) {
+    //   var firstSubmission =
+    //       (json['feedback_submissions'] as List).first as Map<String, dynamic>?;
+    //   if (firstSubmission != null) {
+    //     if (json['type'] == 'multiple_choice' &&
+    //         firstSubmission['option_id'] != null) {
+    //       preSelectedValue = firstSubmission['option_id'].toString();
+    //     } else if (json['type'] == 'descriptive' &&
+    //         firstSubmission['submission_value'] != null) {
+    //       preSelectedValue = firstSubmission['submission_value'] as String?;
+    //     }
+    //   }
+    // }
+
     return FeedbackModel(
       id: json['id'] as int,
       question: json['question_value'] as String? ?? 'No question text',
       type: json['type'] as String? ?? 'unknown',
       hasComments: json['has_comments'] as int? ?? 0,
-      options: parsedOptions, userId: '',
+      options: parsedOptions,
+      selectedOptionId: preSelectedValue,
     );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'question_value': question,
-      'type': type,
-      'has_comments': hasComments,
-      'options':options,
-    };
   }
 }
 
@@ -94,5 +110,38 @@ class FeedbackResponse {
       status: json['status'] as String? ?? 'unknown',
       data: parsedData,
     );
+  }
+}
+
+class FeedbackSubmissionModel {
+  final int? questionid;
+  final int? optionid;
+  // final String? submissionValue;
+
+  FeedbackSubmissionModel({this.optionid, this.questionid});
+
+  factory FeedbackSubmissionModel.fromJson(Map<String, dynamic> json) {
+    return FeedbackSubmissionModel(
+      questionid: json['question_id'],
+      optionid: json['option_id'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {'question_id': questionid, 'option_id': optionid};
+  }
+}
+
+class SubmissionPayload {
+  final String status;
+  final List<FeedbackSubmissionModel> data;
+
+  SubmissionPayload({required this.status, required this.data});
+
+  Map<String, dynamic> toJson() {
+    return {
+      'status': status,
+      'data': data.map((item) => item.toJson()).toList(),
+    };
   }
 }
