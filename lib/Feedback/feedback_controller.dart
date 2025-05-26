@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:worldcon/view/Home.dart';
 import 'package:worldcon/view/NavigationBar.dart';
+import '../Shared_Preferences/shared_preferences.dart';
 import 'feedback_model.dart';
 import 'feedback_service.dart';
 
 class FeedbackPageController extends GetxController {
+  final TokenService _tokenService = Get.find<TokenService>();
+  final FeedbackGetService _feedbackGetService = FeedbackGetService();
+
   var isLoadingFetch = true.obs;
   var isLoadingSubmit = false.obs;
   var feedbackList = <FeedbackModel>[].obs;
   var errorMessage = RxnString();
   var isSubmitSuccess = false.obs;
-
-  final FeedbackGetService _feedbackGetService = FeedbackGetService();
 
   @override
   void onInit() {
@@ -21,32 +22,41 @@ class FeedbackPageController extends GetxController {
   }
 
   Future<void> fetchFeedbackItems() async {
-    try {
-      isLoadingFetch.value = true;
-      errorMessage.value = null;
-      feedbackList.clear();
+    isLoadingFetch.value = true;
+    errorMessage.value = null;
 
-      final FeedbackResponse responseModel =
-          await _feedbackGetService.fetchFeedbackData();
+    final String? currentToken = await _tokenService.getToken();
+
+    if (currentToken == null || currentToken.isEmpty) {
+      errorMessage.value =
+          "Authentication token not found or is empty. Please log in again.";
+      isLoadingFetch.value = false;
+      feedbackList.clear();
+      return;
+    }
+
+    try {
+      feedbackList.clear();
+      final FeedbackResponse responseModel = await _feedbackGetService
+          .fetchFeedbackData(authToken: currentToken);
 
       if (responseModel.status.toLowerCase() == "success") {
         if (responseModel.data.isNotEmpty) {
           feedbackList.assignAll(responseModel.data);
         } else {
-          debugPrint("No feedback questions available from API.");
         }
       } else {
         errorMessage.value =
             "Failed to load feedback questions (API status: ${responseModel.status}).";
       }
     } on FormatException catch (e) {
-      debugPrint("Controller FormatException: ${e.message}");
       errorMessage.value =
           'Data from server is not in the expected format. Details: ${e.message}';
+      feedbackList.clear();
     } catch (e) {
-      debugPrint("Controller Exception: ${e.toString()}");
       errorMessage.value =
           'An error occurred while fetching feedback: ${e.toString()}';
+      feedbackList.clear();
     } finally {
       isLoadingFetch.value = false;
     }
@@ -63,10 +73,24 @@ class FeedbackPageController extends GetxController {
   Future<void> submitFeedback() async {
     isLoadingSubmit.value = true;
     isSubmitSuccess.value = false;
-    bool allSubmissionsSuccessful = true;
     int submittedCount = 0;
+    String? lastReceivedNewToken;
 
-    List<Future<bool>> submissionFutures = [];
+    final String? currentToken = await _tokenService.getToken();
+    if (currentToken == null || currentToken.isEmpty) {
+      Get.snackbar(
+        "Authentication Error",
+        "Your session has expired or token is missing. Please log in again.",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red.shade100,
+        colorText: Colors.red.shade900,
+        duration: const Duration(seconds: 4),
+      );
+      isLoadingSubmit.value = false;
+      return;
+    }
+
+    List<Future<FeedbackPostServiceResponse>> submissionFutures = [];
 
     for (var question in feedbackList) {
       if (question.selectedOptionId != null &&
@@ -79,18 +103,11 @@ class FeedbackPageController extends GetxController {
           if (parsedOptionId != null) {
             optionIdValue = parsedOptionId.toString();
           } else {
-            debugPrint(
-              "Warning: Could not parse optionId: ${question.selectedOptionId} for multiple_choice QID: ${question.id}",
-            );
-            allSubmissionsSuccessful = false;
             continue;
           }
         } else if (question.type.toLowerCase() == "descriptive") {
           submissionTextValue = question.selectedOptionId;
         } else {
-          debugPrint(
-            "Warning: Unknown question type '${question.type}' for QID: ${question.id}. Skipping submission.",
-          );
           continue;
         }
 
@@ -99,9 +116,15 @@ class FeedbackPageController extends GetxController {
             questionId: question.id,
             optionId: optionIdValue,
             submissionValue: submissionTextValue,
-          ).then((success) {
-            if (success) submittedCount++;
-            return success;
+            currentAuthToken: currentToken,
+          ).then((response) {
+            if (response.success) {
+              submittedCount++;
+              if (response.newToken != null && response.newToken!.isNotEmpty) {
+                lastReceivedNewToken = response.newToken;
+              }
+            }
+            return response;
           }),
         );
       }
@@ -119,12 +142,12 @@ class FeedbackPageController extends GetxController {
     }
 
     final results = await Future.wait(submissionFutures);
-    allSubmissionsSuccessful = results.every((success) => success);
+    bool allIndividualSubmissionsSuccessful = results.every(
+      (response) => response.success,
+    );
 
-    isSubmitSuccess.value = allSubmissionsSuccessful;
-
-
-    if (allSubmissionsSuccessful && submittedCount > 0) {
+    if (allIndividualSubmissionsSuccessful && submittedCount > 0) {
+      isSubmitSuccess.value = true;
       Get.snackbar(
         "Success",
         "$submittedCount feedback answer(s) submitted successfully!",
@@ -133,12 +156,15 @@ class FeedbackPageController extends GetxController {
         colorText: Colors.green.shade900,
       );
 
-      Future.delayed(const Duration(milliseconds: 200), () {
-        isLoadingSubmit.value = false;
+      if (lastReceivedNewToken != null) {
+        await _tokenService.saveToken(lastReceivedNewToken!);
+      }
 
-         Get.offAll(() => CustomNavigationBar());
+      Future.delayed(const Duration(milliseconds: 500), () {
+        isLoadingSubmit.value = false;
+        Get.offAll(() => CustomNavigationBar()); // Navigates to homepage
       });
-    } else if (submittedCount > 0 && !allSubmissionsSuccessful) {
+    } else if (submittedCount > 0 && !allIndividualSubmissionsSuccessful) {
       Get.snackbar(
         "Partial Success",
         "Some feedback answers failed to submit. $submittedCount submitted.",
@@ -149,8 +175,8 @@ class FeedbackPageController extends GetxController {
       isLoadingSubmit.value = false;
     } else {
       Get.snackbar(
-        "Error",
-        "Failed to submit feedback. Please check your selections or try again.",
+        "Submission Error",
+        "Failed to submit feedback. Please try again.",
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.red.shade100,
         colorText: Colors.red.shade900,
@@ -160,7 +186,6 @@ class FeedbackPageController extends GetxController {
   }
 
   Future<void> refreshFeedbackPage() async {
-    // ... (implementation remains the same)
     await fetchFeedbackItems();
   }
 }

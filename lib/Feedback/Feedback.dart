@@ -51,7 +51,7 @@ class FeedbackScreen extends StatelessWidget {
         ),
       ),
       body: Obx(() {
-        // This outer Obx handles changes to controller.feedbackList
+
         if (controller.isLoadingFetch.value) {
           return const Center(child: CircularProgressIndicator());
         }
@@ -133,7 +133,7 @@ class FeedbackScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    // REMOVED Obx from here
+
                     Column(
                       children:
                           question.options.map((option) {

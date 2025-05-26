@@ -43,7 +43,8 @@ class LostScreen extends StatelessWidget {
 
 
             return Card(
-              elevation: 1,
+              color: Colors.white,
+              elevation: 2,
               child: ListTile(
                 title: Text.rich(
                   TextSpan(

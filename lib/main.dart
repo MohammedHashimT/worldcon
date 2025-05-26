@@ -19,10 +19,16 @@ import 'package:worldcon/view/Venue%20Layout/VENUE.dart';
 import 'package:worldcon/view/Venue%20Layout/Venue_layout.dart';
 import 'package:worldcon/view/speakers.dart';
 
-void main() async{
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Get.putAsync(() => TokenService().init());
-  runApp(const MyApp());
+  await Get.putAsync<TokenService>(() async {
+    final service = TokenService();
+    await service.init();
+   // debugPrint("TokenService initialized in main. Token: ${service.token.value}");
+    return service;
+  });
+
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {

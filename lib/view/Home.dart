@@ -51,9 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
       MenuItem(
         title: "Today's Program",
         icon: FontAwesomeIcons.calendarDay,
-        onTap: () {
-
-        },
+        onTap: () {},
       ),
       MenuItem(
         title: "Our Speakers",
@@ -65,8 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
       MenuItem(
         title: "Scientific Program",
         icon: FontAwesomeIcons.flaskVial,
-        onTap: () {
-        },
+        onTap: () {},
       ),
     ];
 
@@ -88,21 +85,15 @@ class _HomeScreenState extends State<HomeScreen> {
       MenuItem(
         title: "Quiz",
         icon: FontAwesomeIcons.linesLeaning,
-        onTap: () {
-        },
+        onTap: () {},
       ),
-      MenuItem(
-        title: "Gallery",
-        icon: FontAwesomeIcons.images,
-        onTap: () {
-        },
-      ),
+      MenuItem(title: "Gallery", icon: FontAwesomeIcons.images, onTap: () {}),
       MenuItem(
         title: "Download Certificate",
         icon: FontAwesomeIcons.fileArrowDown,
         onTap: () {
           widget.certificateController.shareCertificateFile();
-          },
+        },
       ),
       MenuItem(
         title: "Root map to Venue",
@@ -118,12 +109,7 @@ class _HomeScreenState extends State<HomeScreen> {
           Get.to(() => ParkingIns());
         },
       ),
-      MenuItem(
-        title: "Note",
-        icon: FontAwesomeIcons.noteSticky,
-        onTap: () {
-        },
-      ),
+      MenuItem(title: "Note", icon: FontAwesomeIcons.noteSticky, onTap: () {}),
       MenuItem(
         title: "Downloads",
         icon: FontAwesomeIcons.download,
@@ -169,8 +155,7 @@ class _HomeScreenState extends State<HomeScreen> {
       MenuItem(
         title: "Refer Friend",
         icon: FontAwesomeIcons.userGroup,
-        onTap: () {
-        },
+        onTap: () {},
       ),
     ];
 
@@ -338,9 +323,7 @@ class _HomeScreenState extends State<HomeScreen> {
             snap: false,
             title: Padding(
               padding: const EdgeInsets.only(left: 0.0),
-              child: Image.asset(
-                'Assets/img/logo.jpg',
-              ),
+              child: Image.asset('Assets/img/logo.jpg'),
             ),
             centerTitle: false,
             actions: [
@@ -388,10 +371,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     width: double.infinity,
                     height: MediaQuery.of(context).size.height * 0.28,
                     child:
-                        currentBanner.imagePath != null &&
-                                currentBanner.imagePath!.isNotEmpty
+                        currentBanner.imagePath.isNotEmpty
                             ? Image.network(
-                              currentBanner.imagePath!,
+                              currentBanner.imagePath,
                               width: double.infinity,
                               fit: BoxFit.cover,
                               loadingBuilder: (

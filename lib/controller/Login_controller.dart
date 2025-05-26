@@ -84,6 +84,8 @@ class LoginController extends GetxController {
         final String token = response.body['token'];
         await _tokenService.saveToken(token);
 
+      //  debugPrint("Token from TokenService after save: ${_tokenService.token.value}");
+
         Get.snackbar(
           "Success",
           response.body['message'] ?? "Login successful!",

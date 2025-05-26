@@ -10,25 +10,6 @@ class ApiService extends GetConnect {
 
   Future<Response> verifyOtp(String email, String otp) {
     final body = {'email': email, 'otp': otp};
-
-    if (otp == "123456") {
-      return Future.value(
-        Response(
-          statusCode: 200,
-          body: {
-            'status': true,
-            'message': 'Login successful',
-            'token': 'user_token_here',
-          },
-        ),
-      );
-    } else {
-      return Future.value(
-        Response(
-          statusCode: 400,
-          body: {'status': false, 'message': 'Invalid OTP'},
-        ),
-      );
-    }
+    return post('$_baseUrl/api-login', body);
   }
 }

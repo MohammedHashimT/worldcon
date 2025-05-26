@@ -48,6 +48,7 @@ dependencies:
   permission_handler: ^12.0.0+1
   share_plus: ^11.0.0
   shared_preferences: ^2.5.3
+  flutter_native_splash: ^2.4.6
 
 dev_dependencies:
   flutter_test:
@@ -66,6 +67,15 @@ dev_dependencies:
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter packages.
+flutter_native_splash:
+  color: "#b05656" # Background color
+  image: Assets/img/logo.jpg # Path to your splash logo image
+  android: true
+  ios: true
+  android_gravity: center
+  ios_content_mode: center
+  fullscreen: true
+
 flutter:
 
   # The following line ensures that the Material Icons font is
